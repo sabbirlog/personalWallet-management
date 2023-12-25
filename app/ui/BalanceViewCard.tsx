@@ -1,4 +1,4 @@
-import { Card, Box, Typography } from '@mui/material'
+import { Card, Box, Typography } from '@mui/material/index'
 
 const BalanceViewCard = () => {
     return (
