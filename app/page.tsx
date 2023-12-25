@@ -12,16 +12,16 @@ export default function Home() {
       alignItems: 'center',
       padding: '100px 0'
     }}>
-      <BalanceViewCard />
+      <BalanceViewCard currencySymbol='$' totalAmount='198' />
       <Stack mt={2}>
         <Button variant="contained" color="info">
           ADD NOTE
         </Button>
       </Stack>
       <Stack mt={2} spacing={2}>
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
+        <NoteCard title='test note test note test note test note test note test note test note test note test note' date='20 Aug 2023' currencySymbol='$' amount='99'/>
+        <NoteCard title='test note test note test note test note test note test note test note test note test note' date='20 Aug 2023' currencySymbol='$' amount='99'/>
+        <NoteCard title='test note test note test note test note test note test note test note test note test note' date='20 Aug 2023' currencySymbol='$' amount='99'/>
       </Stack>
     </main>
   )
