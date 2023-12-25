@@ -1,7 +1,7 @@
 export const light = {
   primary: {
     dark: "#4fc3f7",
-    main: "#fff",
+    main: "#EAEAEA",
     light: "rgba(255,255,255,.2)",
     contrastText: "rgba(0, 0, 0, 0.87)",
   },
