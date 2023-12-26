@@ -9,12 +9,17 @@ import Link from 'next/link';
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
-  const [filteredId, setFilteredId] = useState()
+  const [filteredId, setFilteredId] = useState();
+  const [totalBalan, setTotalBalan] = useState<any>();
 
   useEffect(() => {
     const getNotes = localStorage.getItem('notesArray') && JSON.parse(localStorage.getItem('notesArray'));
+    const totalBalance = localStorage.getItem('totalBalance') && localStorage.getItem('totalBalance');
     if (getNotes) {
       setNotes(getNotes)
+    }
+    if(totalBalance) {
+      setTotalBalan(totalBalance)
     }
     if (notes?.length !== 0 && filteredId) {
       const filteredNotes = notes?.filter((note: any) => note.id !== filteredId)
@@ -31,7 +36,7 @@ export default function Home() {
       alignItems: 'center',
       padding: '100px 0'
     }}>
-      <BalanceViewCard currencySymbol='$' totalAmount='198' />
+      <BalanceViewCard currencySymbol='$' totalAmount={totalBalan || 0} />
       <Stack mt={2}>
         <Link href='/add'>
           <Button variant="contained" color="info">

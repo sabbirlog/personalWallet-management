@@ -55,7 +55,7 @@ export default function AddForm({ notes, setNotes }: any) {
     };
 
     const idGenerator = () => {
-       return '_' + (Math.random() + 1).toString(36).substring(2);
+        return '_' + (Math.random() + 1).toString(36).substring(2);
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, value: any) => {
@@ -91,11 +91,13 @@ export default function AddForm({ notes, setNotes }: any) {
     useEffect(() => {
         if (readyToSubmit) {
             const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
-
-            // Save the new form data to the array using spread operator
             const updatedNotesArray = [...savedNotesData, { ...addNote }];
 
-            // Save the updated array back to localStorage
+            // calculate total balance
+            const totalBalance = updatedNotesArray?.reduce((accumulator, note) => accumulator += note.totalAmount, 0)
+            localStorage.setItem('totalBalance', totalBalance);
+
+            // notes array
             localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
         }
     }, [readyToSubmit])
