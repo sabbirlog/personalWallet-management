@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { BalanceViewCard, NoteCard } from "./ui/index";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CurrencyConverter from './ui/CurrencyConverter';
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -36,6 +37,7 @@ export default function Home() {
       alignItems: 'center',
       padding: '100px 0'
     }}>
+      <CurrencyConverter />
       <BalanceViewCard currencySymbol='$' totalAmount={totalBalan || 0} />
       <Stack mt={2}>
         <Link href='/add'>
