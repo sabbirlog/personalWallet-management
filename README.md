@@ -17,8 +17,8 @@ Make sure you have Git, Yarn, or npm installed on your machine.
 ### Clone the Repository
 
 
-git clone https://github.com/YourUsername/personal_wallet_management
-cd personal_wallet_management
+git clone https://github.com/sabbirlog/personalWallet-management.git
+cd personalWallet-management
 
 
 
