@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import {
     Box,
     Grid,
@@ -14,9 +15,11 @@ import {
     OutlinedInput,
 } from "@mui/material";
 
-export default function AddForm() {
+export default function AddForm({ notes, setNotes }: any) {
     const [selectedAmount, setSelectedAmount] = useState<number>(1);
-    const [readyToSubmit,setReadyToSubmit] = useState(false)
+    const [readyToSubmit, setReadyToSubmit] = useState(false);
+
+    const router = useRouter()
 
     const [addNote, setAddNote] = useState({
         note: '',
@@ -51,6 +54,10 @@ export default function AddForm() {
         return Object.keys(errors).length === 0;
     };
 
+    const idGenerator = () => {
+       return '_' + (Math.random() + 1).toString(36).substring(2);
+    }
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, value: any) => {
         if (event.target.name === 'note' || event.target.name === 'notesCount') {
             setAddNote((prev) => ({
@@ -70,17 +77,27 @@ export default function AddForm() {
         if (validateForm()) {
             setAddNote((prev) => ({
                 ...prev,
+                id: idGenerator(),
                 selectedNote: selectedAmount,
                 totalAmount: +prev.notesCount * selectedAmount,
             }))
-            setReadyToSubmit(true)
+            setReadyToSubmit(true);
+            router.push('/');
         } else {
             console.log('submition failed');
         }
     }
 
     useEffect(() => {
-        localStorage.setItem('notes', JSON.stringify(addNote))
+        if (readyToSubmit) {
+            const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
+
+            // Save the new form data to the array using spread operator
+            const updatedNotesArray = [...savedNotesData, { ...addNote }];
+
+            // Save the updated array back to localStorage
+            localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
+        }
     }, [readyToSubmit])
 
     return (

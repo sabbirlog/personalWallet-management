@@ -7,13 +7,15 @@ interface Types {
     date: string;
     currencySymbol: string;
     amount: string;
+    handleDelete: (event: React.MouseEvent<HTMLElement>) => void
 }
 
 const NoteCard = ({
     title,
     date,
     currencySymbol,
-    amount
+    amount,
+    handleDelete
 }: Types) => {
     return (
         <Card>
@@ -44,7 +46,7 @@ const NoteCard = ({
                         {amount}
                     </Typography>
                 </Box>
-                <Box component="span">
+                <Box component="span" onClick={handleDelete}>
                     <DeleteForeverIcon color="danger" />
                 </Box>
             </Stack>
