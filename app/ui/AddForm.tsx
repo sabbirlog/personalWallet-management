@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Box,
     Grid,
@@ -16,20 +16,20 @@ import {
 
 export default function AddForm() {
     const [selectedAmount, setSelectedAmount] = useState<number>(1);
-    const [inputAmount, setInputAmount] = useState<number>(0);
+    const [readyToSubmit,setReadyToSubmit] = useState(false)
 
     const [addNote, setAddNote] = useState({
         note: '',
         notesCount: 0,
-        type: ''
+        type: '',
+        selectedNote: 0,
+        totalAmount: 0,
     })
 
     const [noteErrors, setNoteErrors] = useState({
         note: '',
         notesCount: '',
     });
-
-    const totalAmount = inputAmount * selectedAmount;
 
     const handleNodeClick = (amount: number) => {
         setSelectedAmount(amount);
@@ -63,7 +63,6 @@ export default function AddForm() {
                 type: value,
             }))
         }
-        setInputAmount(Number(event.target.value));
     };
 
     const handleSubmit = (e: any) => {
@@ -72,12 +71,17 @@ export default function AddForm() {
             setAddNote((prev) => ({
                 ...prev,
                 selectedNote: selectedAmount,
-                totalAmount
+                totalAmount: +prev.notesCount * selectedAmount,
             }))
+            setReadyToSubmit(true)
         } else {
             console.log('submition failed');
         }
     }
+
+    useEffect(() => {
+        localStorage.setItem('notes', JSON.stringify(addNote))
+    }, [readyToSubmit])
 
     return (
         <form onSubmit={handleSubmit}>
@@ -165,7 +169,7 @@ export default function AddForm() {
                                     }}
                                 >
                                     <Typography variant="h3" sx={{ margin: "10px 0" }}>
-                                        {!isNaN(totalAmount) && totalAmount}
+                                        {+addNote.notesCount * selectedAmount}
                                     </Typography>
                                 </Box>
                             </Grid>
