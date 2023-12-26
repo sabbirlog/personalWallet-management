@@ -10,7 +10,9 @@ const BalanceViewCard = ({
     totalAmount
 }: Types) => {
     return (
-        <Card>
+        <Card sx={{
+            marginTop: '20px'
+        }}>
             <Box
                 sx={{
                     display: 'flex',

@@ -24,7 +24,7 @@ export default function AddForm({ notes, setNotes }: any) {
     const [addNote, setAddNote] = useState({
         note: '',
         notesCount: 0,
-        type: '',
+        type: 'income',
         selectedNote: 0,
         totalAmount: 0,
     })
@@ -197,7 +197,7 @@ export default function AddForm({ notes, setNotes }: any) {
 
                     <Box>
                         <Typography variant="h3" sx={{ margin: "10px 0" }}>
-                            Currency Nodes
+                            Currency Notes
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={3}>

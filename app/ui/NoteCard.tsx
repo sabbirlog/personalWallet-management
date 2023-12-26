@@ -4,7 +4,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Types {
     title: string;
-    date: string;
     currencySymbol: string;
     amount: string;
     handleDelete: (event: React.MouseEvent<HTMLElement>) => void
@@ -12,7 +11,6 @@ interface Types {
 
 const NoteCard = ({
     title,
-    date,
     currencySymbol,
     amount,
     handleDelete
@@ -20,14 +18,12 @@ const NoteCard = ({
     return (
         <Card>
             <Stack sx={{
-                alignItems: 'center'
+                alignItems: 'center',
+                justifyContent: 'space-between'
             }} direction="row" spacing={2}>
                 <Box>
                     <Typography variant="body1">
                         {title}
-                    </Typography>
-                    <Typography variant="body2">
-                        {date}
                     </Typography>
                 </Box>
                 <Box
