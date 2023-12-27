@@ -94,7 +94,13 @@ export default function AddForm({ notes, setNotes }: any) {
             const updatedNotesArray = [...savedNotesData, { ...addNote }];
 
             // calculate total balance
-            const totalBalance = updatedNotesArray?.reduce((accumulator, note) => accumulator += note.totalAmount, 0)
+            const totalBalance = updatedNotesArray && updatedNotesArray?.reduce((accumulator, note) => {
+                if (note.type === 'Income') {
+                    return accumulator + note.totalAmount
+                }
+                return accumulator - note.totalAmount
+
+            }, 0)
             localStorage.setItem('totalBalance', totalBalance);
 
             // notes array
