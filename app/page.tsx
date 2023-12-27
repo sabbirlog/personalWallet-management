@@ -13,7 +13,7 @@ import { getSymbols } from '@/utils/getSymbols';
 export default function Home() {
   const [notes, setNotes] = useState([]);
   const [filteredId, setFilteredId] = useState();
-  const [totalBalan, setTotalBalan] = useState<any>();
+  const [totalBalan, setTotalBalan] = useState<any>(0);
   const [currencies, setCurrencies] = useState();
   const [value, setValue] = useState<any>();
 
