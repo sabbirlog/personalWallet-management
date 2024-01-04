@@ -13,7 +13,7 @@ export const light = {
   },
   warning: {
     dark: "#1C2C35",
-    main: "#fdcb6e",
+    main: "#FF6347",
     light: "rgb(#fff,54%)",
     contrastText: "rgba(0, 0, 0, 0.87)",
   },
@@ -65,8 +65,8 @@ export const light = {
     activatedOpacity: 0.24,
   },
   background: {
-    default: "#fcfcfc",
-    paper: "#1a1422",
+    default: "#fff",
+    paper: "#fff",
   },
   common: {
     black: "#000",

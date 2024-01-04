@@ -15,7 +15,7 @@ import {
     OutlinedInput,
 } from "@mui/material";
 
-export default function AddForm({ notes, setNotes }: any) {
+export default function AddForm() {
     const [selectedAmount, setSelectedAmount] = useState<number>(1);
     const [readyToSubmit, setReadyToSubmit] = useState(false);
 

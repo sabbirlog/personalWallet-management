@@ -3,9 +3,9 @@ import { Theme, Components, alpha } from "@mui/material/styles";
 const MuiCard: Components<Theme>["MuiCard"] = {
   styleOverrides: {
     root: ({ theme, ownerState }) => ({
-      width: '500px',
+      width: '100%',
       padding: '30px 16px',
-      background:alpha(theme.palette.primary.main, 0.6),
+      background: alpha(theme.palette.primary.main, 0.1),
       color: theme.palette.primary.contrastText,
       transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
       boxShadow:

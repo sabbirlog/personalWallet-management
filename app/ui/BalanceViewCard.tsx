@@ -2,7 +2,7 @@ import { Card, Box, Typography } from '@mui/material/index'
 
 interface Types {
     currencySymbol: string;
-    totalAmount: number;
+    totalAmount: number | string;
 }
 
 const BalanceViewCard = ({

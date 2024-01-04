@@ -15,7 +15,7 @@ export const OpenSans = Open_Sans({
   display: "swap",
 });
 
-export interface TypographyVariants extends TypographyVariantsOption {}
+export interface TypographyVariants extends TypographyVariantsOption { }
 
 export default {
   fontFamily: `${mulish.style.fontFamily}`,
@@ -32,7 +32,7 @@ export default {
   },
   h2: {
     ...mulish.style,
-    fontSize: "20px",
+    fontSize: "26px",
     fontWeight: 700,
     lineHeight: 1.2,
     letterSpacing: "-0.00833em",
@@ -40,7 +40,7 @@ export default {
   h3: {
     ...OpenSans.style,
     fontWeight: 500,
-    fontSize: "18px",
+    fontSize: "20px",
     lineHeight: "1.2em",
     letterSpacing: ".08em",
   },

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import CurrencyConverter from './ui/CurrencyConverter';
 import { fetchCurrency } from './api/fetchCurrency';
 import { getSymbols } from '@/utils/getSymbols';
+import { Box, Container, Typography } from '@mui/material';
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -43,32 +44,43 @@ export default function Home() {
     fetchData()
   }, [filteredId])
 
-  const convertion = currencies && currencies.data[value]
+  const convertion = currencies && currencies.data[value];
 
   return (
     <main style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
+      // display: 'flex',
+      // flexDirection: 'column',
+      // justifyContent: 'center',
+      // alignItems: 'center',
       padding: '100px 0'
     }}>
-      <CurrencyConverter setCurrency={setValue} />
-      <BalanceViewCard currencySymbol={getSymbols(value)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
-      <Stack mt={2}>
-        <Link href='/add'>
-          <Button variant="contained" color="info">
-            ADD NOTE
-          </Button>
-        </Link>
-      </Stack>
-      <Stack mt={2} spacing={2}>
-        {
-          notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note}
-            currencySymbol={getSymbols(value)}
-            amount={(note.totalAmount * convertion).toFixed(2)} handleDelete={() => setFilteredId(note.id)} />) : 'nothing'
-        }
-      </Stack>
+      <Container>
+        <Stack direction="row" spacing={2} mb={4} justifyContent='space-between'>
+          <Typography component='h2' variant='h2'>
+            Personal Wallet Management
+          </Typography>
+          <Link href='/add'>
+            <Button variant="contained" color="info">
+              ADD NOTE
+            </Button>
+          </Link>
+        </Stack>
+        <CurrencyConverter setCurrency={setValue} />
+        <BalanceViewCard currencySymbol={getSymbols(value)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
+        <Stack mt={2} spacing={2}>
+          <Typography mb={2} component='h3' variant="h3" justifySelf="flex-start">
+            Note Lists
+          </Typography>
+          {
+            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.type}
+              currencySymbol={getSymbols(value)}
+              currencyName='USD'
+              amount={(note.totalAmount * convertion).toFixed(2)} handleDelete={() => setFilteredId(note.id)} />) : <Box>
+              No notes found
+            </Box>
+          }
+        </Stack>
+      </Container>
     </main>
   )
 }

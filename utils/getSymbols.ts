@@ -1,4 +1,4 @@
-export const getSymbols = (value: any) => {
+export const getSymbols = (value: string) => {
     switch (value) {
         case 'CAD':
             return 'CA$'
