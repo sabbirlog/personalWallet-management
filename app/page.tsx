@@ -10,8 +10,10 @@ import CurrencyConverter from './ui/CurrencyConverter';
 import { fetchCurrency } from './api/fetchCurrency';
 import { getSymbols } from '@/utils/getSymbols';
 import { Box, Container, Typography } from '@mui/material';
+import AddEntryModal from './ui/AddEntryModal';
 
 export default function Home() {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [notes, setNotes] = useState([]);
   const [filteredId, setFilteredId] = useState();
   const [totalBalan, setTotalBalan] = useState<any>(0);
@@ -19,6 +21,10 @@ export default function Home() {
   const [value, setValue] = useState<any>();
 
   console.log('value', value)
+
+  const handleModalOpen = () => {
+    setOpenModal(true)
+  }
 
   useEffect(() => {
     const getNotes = localStorage.getItem('notesArray') && JSON.parse(localStorage.getItem('notesArray'));
@@ -59,11 +65,9 @@ export default function Home() {
           <Typography component='h2' variant='h2'>
             Personal Wallet Management
           </Typography>
-          <Link href='/add'>
-            <Button variant="contained" color="info">
-              ADD NOTE
-            </Button>
-          </Link>
+          <Button variant="contained" color="info" onClick={handleModalOpen}>
+            ADD NOTE
+          </Button>
         </Stack>
         <CurrencyConverter setCurrency={setValue} />
         <BalanceViewCard currencySymbol={getSymbols(value)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
@@ -81,6 +85,7 @@ export default function Home() {
           }
         </Stack>
       </Container>
+      <AddEntryModal open={openModal} setOpen={setOpenModal} />
     </main>
   )
 }
