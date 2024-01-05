@@ -5,8 +5,7 @@ const MuiModal: Components<Theme>['MuiModal'] = {
         root: ({ theme, ownerState }) => ({
             padding: '10px',
             ".MuiModal-backdrop": {
-                backgroundColor: alpha(theme.palette.primary.main, .8),
-                backdropFilter: 'blur(2px)'
+                backdropFilter: 'blur(1px)'
             },
         })
     }

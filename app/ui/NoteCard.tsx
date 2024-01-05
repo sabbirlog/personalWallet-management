@@ -22,7 +22,8 @@ const NoteCard = ({
 }: Types) => {
     return (
         <Card sx={{
-            position: 'relative'
+            position: 'relative',
+            cursor: 'default'
         }}>
             <Stack sx={{
                 alignItems: 'center',
@@ -44,7 +45,9 @@ const NoteCard = ({
                         <Box component='span'>CURRENCY DENOMINATIONS :</Box> {currencySymbol}1 : 10 - {currencySymbol}5 : 10 - {currencySymbol}10 : 10 - {currencySymbol}20 : 10
                     </Typography>
                 </Box>
-                <Box component="span" onClick={handleDelete}>
+                <Box sx={{
+                    cursor: 'pointer'
+                }} component="span" onClick={handleDelete}>
                     <DeleteForeverIcon color="warning" />
                 </Box>
             </Stack>
