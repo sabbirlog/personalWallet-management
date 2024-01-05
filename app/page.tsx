@@ -20,8 +20,6 @@ export default function Home() {
   const [currencies, setCurrencies] = useState();
   const [value, setValue] = useState<any>();
 
-  console.log('value', value)
-
   const handleModalOpen = () => {
     setOpenModal(true)
   }
@@ -79,7 +77,9 @@ export default function Home() {
             notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.type}
               currencySymbol={getSymbols(value)}
               currencyName='USD'
-              amount={(note.totalAmount * convertion).toFixed(2)} handleDelete={() => setFilteredId(note.id)} />) : <Box>
+              amount={(note.totalAmount * convertion).toFixed(2)} handleDelete={() =>
+                setFilteredId(note.id)
+              } />) : <Box>
               No notes found
             </Box>
           }
