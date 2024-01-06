@@ -35,7 +35,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const getNotes = localStorage.getItem('notesArray') && JSON.parse(localStorage.getItem('notesArray'));
+    const getNotes = localStorage.getItem('notesArray') && JSON.parse(localStorage.getItem('notesArray') as string);
     if (getNotes) {
       setNotes(getNotes)
     }
@@ -54,7 +54,7 @@ export default function Home() {
     fetchData()
   }, [filteredId, openModal])
 
-  const convertion = currencies && currencies.data[currencyName];
+  // const convertion = currencies && currencies.data[currencyName];
 
   return (
     <main style={{

@@ -94,7 +94,7 @@ export default function AddForm({ currencyName, handleModalClose }: {
         }
 
         // get notes from local storage
-        const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
+        const savedNotesData = JSON.parse(localStorage.getItem('notesArray') as string) || [];
         const updatedNotesArray = [...savedNotesData, { ...submitData }];
 
         // set notes array to local storage
