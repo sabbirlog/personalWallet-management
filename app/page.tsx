@@ -18,7 +18,7 @@ export default function Home() {
   const [filteredId, setFilteredId] = useState();
   const [totalBalan, setTotalBalan] = useState<any>(0);
   const [currencies, setCurrencies] = useState();
-  const [value, setValue] = useState<any>();
+  const [currencyName, setCurrencyName] = useState<any>();
 
   const handleModalOpen = () => {
     setOpenModal(true)
@@ -48,7 +48,7 @@ export default function Home() {
     fetchData()
   }, [filteredId])
 
-  const convertion = currencies && currencies.data[value];
+  const convertion = currencies && currencies.data[currencyName];
 
   return (
     <main style={{
@@ -67,15 +67,15 @@ export default function Home() {
             ADD NOTE
           </Button>
         </Stack>
-        <CurrencyConverter setCurrency={setValue} />
-        <BalanceViewCard currencySymbol={getSymbols(value)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
+        <CurrencyConverter setCurrency={setCurrencyName} />
+        <BalanceViewCard currencySymbol={getSymbols(currencyName)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
         <Stack mt={2} spacing={2}>
           <Typography mb={2} component='h3' variant="h3" justifySelf="flex-start">
             Note Lists
           </Typography>
           {
             notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.type}
-              currencySymbol={getSymbols(value)}
+              currencySymbol={getSymbols(currencyName)}
               currencyName='USD'
               amount={note.totalAmount} handleDelete={() =>
                 setFilteredId(note.id)
@@ -85,7 +85,7 @@ export default function Home() {
           }
         </Stack>
       </Container>
-      <AddEntryModal open={openModal} setOpen={setOpenModal} />
+      <AddEntryModal open={openModal} setOpen={setOpenModal} currencyName={currencyName} />
     </main>
   )
 }

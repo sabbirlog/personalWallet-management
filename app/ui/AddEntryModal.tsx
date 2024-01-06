@@ -3,8 +3,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 import AddForm from './AddForm';
 
 const style = {
@@ -21,13 +20,12 @@ const style = {
 };
 
 export default function AddEntryModal({
-    open, setOpen
+    open, setOpen, currencyName
 }: {
-    open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    currencyName: string
 }) {
-    // const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
@@ -46,7 +44,7 @@ export default function AddEntryModal({
         >
             <Fade in={open}>
                 <Box sx={style}>
-                    <AddForm />
+                    <AddForm currencyName={currencyName} />
                 </Box>
             </Fade>
         </Modal>

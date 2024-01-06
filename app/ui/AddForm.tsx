@@ -20,7 +20,7 @@ import {
 const validation = yup.object().shape({
     note: yup.string().required('Note is required'),
     currencyNote: yup.string().required('Select currency notes'),
-    notesCount: yup.number().required('Enter how many notes you want'),
+    notesCount: yup.number().optional(),
     total: yup.number().optional(),
     noteType: yup.string().optional()
 });
@@ -29,7 +29,9 @@ const currencyNotes = [
     1, 5, 10, 20
 ]
 
-export default function AddForm() {
+export default function AddForm({ currencyName }: {
+    currencyName: string
+}) {
     const { control, handleSubmit, formState: {
         errors
     } } = useForm({
@@ -38,7 +40,7 @@ export default function AddForm() {
 
     const onSubmit = data => console.log('data', data);
 
-    const [currencyNote, setCurrencyNote] = useState<string>()
+    const [currencyNote, setCurrencyNote] = useState<string>('')
 
     const [denominations, setDenominations] = useState<{
         '1': number,
@@ -60,13 +62,23 @@ export default function AddForm() {
         const convertToInteger = parseInt(value)
 
         Object.keys(denominations)?.map((denomination) => {
-            if (denomination === currencyNote?.toString() && convertToInteger >= 0) {
+            if (denomination === currencyNote?.toString()) {
                 setDenominations(prev => ({
                     ...prev,
                     [denomination]: convertToInteger
                 }))
             }
         })
+    }
+
+    const calculateTotal = () => {
+        return Object.entries(denominations)?.reduce((total, [key, value]) => {
+            if (value > 0) {
+                const aa = total + parseInt(key) * value
+                return aa;
+            }
+            return total
+        }, 0)
     }
 
     // const handleSubmit = (e: any) => {   
@@ -152,32 +164,25 @@ export default function AddForm() {
                 <FormHelperText>{errors.currencyNote?.message}</FormHelperText>
             </Box>
             <Stack flexDirection='row' gap={2} mb={2}>
-                <Box sx={{
-                    '.MuiFormHelperText-root': {
-                        color: '#d32f2f'
-                    },
-                }}>
-                    <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
-                        {...field}
-                        label='Notes Count'
-                        type='number'
-                        variant="outlined"
-                        color="info"
-                        error={Boolean(errors.notesCount)}
-                        onChange={(e) => {
-                            field.onChange(e);
-                            updateDenominations(e.target.value)
-                        }}
-                    />}
-                    />
-                    <FormHelperText>{errors.notesCount?.message}</FormHelperText>
-                </Box>
+                <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
+                    {...field}
+                    label='Notes Count'
+                    type='number'
+                    variant="outlined"
+                    color="info"
+                    onChange={(e) => {
+                        field.onChange(e);
+                        updateDenominations(e.target.value);
+                    }}
+                />}
+                />
                 <Controller name="total" control={control} defaultValue={0}
                     render={({ field }) =>
                         <TextField
                             {...field}
                             label="Total Amount"
                             type='number'
+                            value={calculateTotal()}
                             variant="outlined"
                             color="info"
                             InputProps={{
