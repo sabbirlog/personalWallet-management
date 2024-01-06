@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Box, Container, Typography } from '@mui/material';
+import { alpha, Box, Card, Container, Typography } from '@mui/material';
 
 import { BalanceViewCard, NoteCard } from "./ui/index";
 import CurrencyConverter from './ui/CurrencyConverter';
@@ -86,9 +86,14 @@ export default function Home() {
               notesCount={note.notesCount}
               handleDelete={() =>
                 setFilteredId(note.id)
-              } />) : <Box>
-              No notes found
-            </Box>
+              } />) : (<Card sx={{
+                textAlign: 'center',
+                backgroundColor: alpha('#e3f2fd', .2)
+              }}>
+                <Typography component='h2' variant="h2" fontWeight={500}>
+                  No notes found
+                </Typography>
+              </Card>)
           }
         </Stack>
       </Container>
