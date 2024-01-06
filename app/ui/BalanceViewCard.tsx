@@ -1,14 +1,22 @@
 import { Card, Box, Typography } from '@mui/material/index'
 
+import { getSymbols } from '@utils/getSymbols';
+
 interface Types {
-    currencySymbol: string;
-    totalAmount: number | string;
+    currencyName: string;
+    walltetName: string;
+    totalAmount: (val: string) => void
 }
 
 const BalanceViewCard = ({
-    currencySymbol,
+    currencyName,
+    walltetName,
     totalAmount
 }: Types) => {
+
+    const symbols = getSymbols(walltetName);
+    const total: any = totalAmount(walltetName)
+
     return (
         <Card sx={{
             marginTop: '20px'
@@ -27,7 +35,7 @@ const BalanceViewCard = ({
                     }}
                     variant="h3"
                 >
-                    Current Balance
+                    {walltetName} BALANCE
                 </Typography>
                 <Box
                     sx={{
@@ -37,12 +45,12 @@ const BalanceViewCard = ({
                     <Typography
                         variant="h3"
                     >
-                        {currencySymbol}
+                        {symbols}
                     </Typography>
                     <Typography
                         variant="h3"
                     >
-                        {totalAmount}
+                        {total}
                     </Typography>
                 </Box>
             </Box>

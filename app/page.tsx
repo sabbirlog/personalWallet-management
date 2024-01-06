@@ -8,18 +8,30 @@ import { Box, Container, Typography } from '@mui/material';
 import { BalanceViewCard, NoteCard } from "./ui/index";
 import CurrencyConverter from './ui/CurrencyConverter';
 import { fetchCurrency } from './api/fetchCurrency';
-import { getSymbols } from '@/utils/getSymbols';
 import AddEntryModal from './ui/AddEntryModal';
 
 export default function Home() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [notes, setNotes] = useState<{}[]>([]);
-  const [filteredId, setFilteredId] = useState();
+  const [filteredId, setFilteredId] = useState<string>('');
   const [currencies, setCurrencies] = useState();
   const [currencyName, setCurrencyName] = useState<string>('USD');
 
   const handleModalOpen = () => {
     setOpenModal(true)
+  }
+
+  const totalBalanceByCurrency = (currency: string) => {
+    return notes?.reduce((total: number, note: any) => {
+      if (note?.currencyName === currency) {
+        if (note?.noteType === 'Income') {
+          return total + note?.total
+        } else {
+          return total - note?.total
+        }
+      }
+      return total
+    }, 0)
   }
 
   useEffect(() => {
@@ -58,7 +70,11 @@ export default function Home() {
           </Button>
         </Stack>
         <CurrencyConverter currencyName={currencyName} setCurrencyName={setCurrencyName} />
-        <BalanceViewCard currencySymbol={getSymbols(currencyName)} totalAmount={0} />
+        <Stack direction='row' gap={2}>
+          <BalanceViewCard currencyName={currencyName} walltetName="USD" totalAmount={totalBalanceByCurrency} />
+          <BalanceViewCard currencyName={currencyName} walltetName="EUR" totalAmount={totalBalanceByCurrency} />
+          <BalanceViewCard currencyName={currencyName} walltetName="CAD" totalAmount={totalBalanceByCurrency} />
+        </Stack>
         <Stack mt={2} spacing={2}>
           <Typography mb={2} component='h3' variant="h3" justifySelf="flex-start">
             Note Lists
