@@ -77,7 +77,7 @@ export default function Home() {
             notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.type}
               currencySymbol={getSymbols(value)}
               currencyName='USD'
-              amount={(note.totalAmount * convertion).toFixed(2)} handleDelete={() =>
+              amount={note.totalAmount} handleDelete={() =>
                 setFilteredId(note.id)
               } />) : <Box>
               No notes found

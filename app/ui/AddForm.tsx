@@ -20,7 +20,7 @@ import {
 const validation = yup.object().shape({
     note: yup.string().required('Note is required'),
     currencyNote: yup.string().required('Select currency notes'),
-    notesCount: yup.number().optional(),
+    notesCount: yup.number().required('Enter how many notes you want'),
     total: yup.number().optional(),
     noteType: yup.string().optional()
 });
@@ -35,35 +35,39 @@ export default function AddForm() {
     } } = useForm({
         resolver: yupResolver(validation),
     });
-    console.log('errors', errors)
 
     const onSubmit = data => console.log('data', data);
 
-    const [addNote, setAddNote] = useState({
-        note: '',
-        notesCount: 0,
-        type: 'Income',
-        selectedNote: 0,
-        totalAmount: 0,
+    const [currencyNote, setCurrencyNote] = useState<string>()
+
+    const [denominations, setDenominations] = useState<{
+        '1': number,
+        '5': number,
+        '10': number,
+        '20': number
+    }>({
+        '1': 0,
+        '5': 0,
+        '10': 0,
+        '20': 0
     })
 
     const idGenerator = () => {
         return '_' + (Math.random() + 1).toString(36).substring(2);
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, value: any) => {
-        if (event.target.name === 'note' || event.target.name === 'notesCount') {
-            setAddNote((prev) => ({
-                ...prev,
-                [event.target.name]: event.target.value,
-            }))
-        } else {
-            setAddNote((prev) => ({
-                ...prev,
-                type: value,
-            }))
-        }
-    };
+    const updateDenominations = (value: string) => {
+        const convertToInteger = parseInt(value)
+
+        Object.keys(denominations)?.map((denomination) => {
+            if (denomination === currencyNote?.toString() && convertToInteger >= 0) {
+                setDenominations(prev => ({
+                    ...prev,
+                    [denomination]: convertToInteger
+                }))
+            }
+        })
+    }
 
     // const handleSubmit = (e: any) => {   
     //     e.preventDefault();
@@ -81,23 +85,23 @@ export default function AddForm() {
     //     }
     // }
 
-    useEffect(() => {
-        const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
-        const updatedNotesArray = [...savedNotesData, { ...addNote }];
+    // useEffect(() => {
+    //     const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
+    //     const updatedNotesArray = [...savedNotesData, { ...addNote }];
 
-        // calculate total balance
-        const totalBalance = updatedNotesArray && updatedNotesArray?.reduce((accumulator, note) => {
-            if (note.type === 'Income') {
-                return accumulator + note.totalAmount
-            }
-            return accumulator - note.totalAmount
+    //     // calculate total balance
+    //     const totalBalance = updatedNotesArray && updatedNotesArray?.reduce((accumulator, note) => {
+    //         if (note.type === 'Income') {
+    //             return accumulator + note.totalAmount
+    //         }
+    //         return accumulator - note.totalAmount
 
-        }, 0)
-        localStorage.setItem('totalBalance', totalBalance);
+    //     }, 0)
+    //     localStorage.setItem('totalBalance', totalBalance);
 
-        // notes array
-        localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
-    }, [])
+    //     // notes array
+    //     localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
+    // }, [])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -132,6 +136,10 @@ export default function AddForm() {
                         error={Boolean(errors.currencyNote)}
                         displayEmpty
                         color="info"
+                        onChange={(e) => {
+                            field.onChange(e)
+                            setCurrencyNote(e.target.value)
+                        }}
                         renderValue={(selected) => selected || 'Currency Notes'}
                     >
                         {
@@ -144,14 +152,26 @@ export default function AddForm() {
                 <FormHelperText>{errors.currencyNote?.message}</FormHelperText>
             </Box>
             <Stack flexDirection='row' gap={2} mb={2}>
-                <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
-                    {...field}
-                    label='Notes Count'
-                    type='number'
-                    variant="outlined"
-                    color="info"
-                />}
-                />
+                <Box sx={{
+                    '.MuiFormHelperText-root': {
+                        color: '#d32f2f'
+                    },
+                }}>
+                    <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
+                        {...field}
+                        label='Notes Count'
+                        type='number'
+                        variant="outlined"
+                        color="info"
+                        error={Boolean(errors.notesCount)}
+                        onChange={(e) => {
+                            field.onChange(e);
+                            updateDenominations(e.target.value)
+                        }}
+                    />}
+                    />
+                    <FormHelperText>{errors.notesCount?.message}</FormHelperText>
+                </Box>
                 <Controller name="total" control={control} defaultValue={0}
                     render={({ field }) =>
                         <TextField
