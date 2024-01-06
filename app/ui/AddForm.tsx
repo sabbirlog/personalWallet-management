@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -16,6 +16,7 @@ import {
     FormHelperText,
     Stack,
 } from "@mui/material";
+import { getSymbols } from "@utils/getSymbols";
 
 const validation = yup.object().shape({
     note: yup.string().required('Note is required'),
@@ -29,16 +30,15 @@ const currencyNotes = [
     1, 5, 10, 20
 ]
 
-export default function AddForm({ currencyName }: {
-    currencyName: string
+export default function AddForm({ currencyName, handleModalClose }: {
+    currencyName: string,
+    handleModalClose: () => void
 }) {
     const { control, handleSubmit, formState: {
         errors
     } } = useForm({
         resolver: yupResolver(validation),
     });
-
-    const onSubmit = data => console.log('data', data);
 
     const [currencyNote, setCurrencyNote] = useState<string>('')
 
@@ -74,46 +74,36 @@ export default function AddForm({ currencyName }: {
     const calculateTotal = () => {
         return Object.entries(denominations)?.reduce((total, [key, value]) => {
             if (value > 0) {
-                const aa = total + parseInt(key) * value
-                return aa;
+                const totalAmount = total + parseInt(key) * value
+                return totalAmount;
             }
             return total
         }, 0)
     }
 
-    // const handleSubmit = (e: any) => {   
-    //     e.preventDefault();
-    //     if (validateForm()) {
-    //         setAddNote((prev) => ({
-    //             ...prev,
-    //             id: idGenerator(),
-    //             selectedNote: selectedAmount,
-    //             totalAmount: +prev.notesCount * selectedAmount,
-    //         }))
-    //         setReadyToSubmit(true);
-    //         router.push('/');
-    //     } else {
-    //         console.log('submition failed');
-    //     }
-    // }
+    const onSubmit = (data: any) => {
+        if (data) {
+            delete data?.currencyNote
+        }
+        const submitData = {
+            ...data,
+            id: idGenerator(),
+            currencyName,
+            notesCount: denominations,
+            total: calculateTotal(),
+        }
 
-    // useEffect(() => {
-    //     const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
-    //     const updatedNotesArray = [...savedNotesData, { ...addNote }];
+        // get notes from local storage
+        const savedNotesData = JSON.parse(localStorage.getItem('notesArray')) || [];
+        const updatedNotesArray = [...savedNotesData, { ...submitData }];
 
-    //     // calculate total balance
-    //     const totalBalance = updatedNotesArray && updatedNotesArray?.reduce((accumulator, note) => {
-    //         if (note.type === 'Income') {
-    //             return accumulator + note.totalAmount
-    //         }
-    //         return accumulator - note.totalAmount
+        // set notes array to local storage
+        localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
 
-    //     }, 0)
-    //     localStorage.setItem('totalBalance', totalBalance);
+        handleModalClose()
+    };
 
-    //     // notes array
-    //     localStorage.setItem('notesArray', JSON.stringify(updatedNotesArray));
-    // }, [])
+    const currencySymbol = getSymbols(currencyName);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,7 +146,7 @@ export default function AddForm({ currencyName }: {
                     >
                         {
                             currencyNotes?.map((note, i) =>
-                                <MenuItem key={i} value={note}>${note}</MenuItem>
+                                <MenuItem key={i} value={note}>{currencySymbol}{note}</MenuItem>
                             )
                         }
                     </Select>
@@ -229,14 +219,28 @@ export default function AddForm({ currencyName }: {
                     </ToggleButton>
                 </ToggleButtonGroup>} />
             </Box>
-            <Button
-                type="submit"
-                variant="contained"
-                color="info"
-                sx={{ marginTop: "20px" }}
-            >
-                ADD NOTE
-            </Button>
+            <Stack sx={{ marginTop: "20px" }} direction="row" gap={2}>
+                <Button
+                    sx={{
+                        width: '100%'
+                    }}
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleModalClose}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    sx={{
+                        width: '100%'
+                    }}
+                    type="submit"
+                    variant="contained"
+                    color="info"
+                >
+                    ADD NOTE
+                </Button>
+            </Stack>
         </form >
     );
 }

@@ -1,25 +1,32 @@
-import { Card, Box, Typography, Chip } from "@mui/material/index"
+import { useState } from "react";
+import { Card, Box, Typography } from "@mui/material/index"
 import Stack from '@mui/material/stack'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 import CustomChip from "./CustomChip";
-import { useState } from "react";
 import AlertDialog from "./AlertDialog";
+import { getSymbols } from "@utils/getSymbols";
 
 interface Types {
     title: string;
     type: string;
-    currencySymbol: string;
     currencyName: string;
     amount: string;
+    notesCount: {
+        '1': number,
+        '5': number,
+        '10': number,
+        '20': number
+    };
     handleDelete: (event?: React.MouseEvent<HTMLElement>) => void
 }
 
 const NoteCard = ({
     title,
-    currencySymbol,
     currencyName,
     type,
     amount,
+    notesCount,
     handleDelete
 }: Types) => {
     const [openAlert, setOpenAlert] = useState<boolean>(false);
@@ -27,6 +34,8 @@ const NoteCard = ({
     const handleOpen = () => {
         setOpenAlert(true)
     }
+
+    const currencySymbol = getSymbols(currencyName)
 
     return (
         <>
@@ -46,12 +55,14 @@ const NoteCard = ({
                             variant="body1"
                             mb={2}
                         >
-                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{amount} <CustomChip label={type} type={type} />
+                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{amount} <CustomChip label={type} type={type} sx={{
+                                marginLeft: '6px'
+                            }} />
                         </Typography>
                         <Typography
                             variant="body1"
                         >
-                            <Box component='span'>CURRENCY DENOMINATIONS :</Box> {currencySymbol}1 : 10 - {currencySymbol}5 : 10 - {currencySymbol}10 : 10 - {currencySymbol}20 : 10
+                            <Box component='span'>CURRENCY DENOMINATIONS :</Box> {currencySymbol}1 : {notesCount[1]} - {currencySymbol}5 : {notesCount[5]} - {currencySymbol}10 : {notesCount[10]} - {currencySymbol}20 : {notesCount[20]}
                         </Typography>
                     </Box>
                     <Box sx={{

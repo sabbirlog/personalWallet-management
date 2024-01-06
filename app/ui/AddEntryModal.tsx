@@ -24,7 +24,7 @@ export default function AddEntryModal({
 }: {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    currencyName: string
+    currencyName: string,
 }) {
     const handleClose = () => setOpen(false);
 
@@ -44,7 +44,7 @@ export default function AddEntryModal({
         >
             <Fade in={open}>
                 <Box sx={style}>
-                    <AddForm currencyName={currencyName} />
+                    <AddForm currencyName={currencyName} handleModalClose={handleClose} />
                 </Box>
             </Fade>
         </Modal>

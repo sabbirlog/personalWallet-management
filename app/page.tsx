@@ -26,12 +26,8 @@ export default function Home() {
 
   useEffect(() => {
     const getNotes = localStorage.getItem('notesArray') && JSON.parse(localStorage.getItem('notesArray'));
-    const totalBalance = localStorage.getItem('totalBalance') && localStorage.getItem('totalBalance');
     if (getNotes) {
       setNotes(getNotes)
-    }
-    if (totalBalance) {
-      setTotalBalan(totalBalance)
     }
     if (notes?.length !== 0 && filteredId) {
       const filteredNotes = notes?.filter((note: any) => note.id !== filteredId)
@@ -46,7 +42,7 @@ export default function Home() {
       }
     }
     fetchData()
-  }, [filteredId])
+  }, [filteredId, openModal])
 
   const convertion = currencies && currencies.data[currencyName];
 
@@ -74,10 +70,11 @@ export default function Home() {
             Note Lists
           </Typography>
           {
-            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.type}
-              currencySymbol={getSymbols(currencyName)}
-              currencyName='USD'
-              amount={note.totalAmount} handleDelete={() =>
+            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.noteType}
+              currencyName={note.currencyName}
+              amount={note.total}
+              notesCount={note.notesCount}
+              handleDelete={() =>
                 setFilteredId(note.id)
               } />) : <Box>
               No notes found
