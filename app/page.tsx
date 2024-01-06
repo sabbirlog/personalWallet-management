@@ -1,24 +1,22 @@
 'use client'
 
+import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { Box, Container, Typography } from '@mui/material';
 
 import { BalanceViewCard, NoteCard } from "./ui/index";
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import CurrencyConverter from './ui/CurrencyConverter';
 import { fetchCurrency } from './api/fetchCurrency';
 import { getSymbols } from '@/utils/getSymbols';
-import { Box, Container, Typography } from '@mui/material';
 import AddEntryModal from './ui/AddEntryModal';
 
 export default function Home() {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<{}[]>([]);
   const [filteredId, setFilteredId] = useState();
-  const [totalBalan, setTotalBalan] = useState<any>(0);
   const [currencies, setCurrencies] = useState();
-  const [currencyName, setCurrencyName] = useState<any>();
+  const [currencyName, setCurrencyName] = useState<string>('USD');
 
   const handleModalOpen = () => {
     setOpenModal(true)
@@ -48,10 +46,6 @@ export default function Home() {
 
   return (
     <main style={{
-      // display: 'flex',
-      // flexDirection: 'column',
-      // justifyContent: 'center',
-      // alignItems: 'center',
       padding: '100px 0'
     }}>
       <Container>
@@ -63,8 +57,8 @@ export default function Home() {
             ADD NOTE
           </Button>
         </Stack>
-        <CurrencyConverter setCurrency={setCurrencyName} />
-        <BalanceViewCard currencySymbol={getSymbols(currencyName)} totalAmount={(totalBalan * convertion).toFixed(2) || 0} />
+        <CurrencyConverter currencyName={currencyName} setCurrencyName={setCurrencyName} />
+        <BalanceViewCard currencySymbol={getSymbols(currencyName)} totalAmount={0} />
         <Stack mt={2} spacing={2}>
           <Typography mb={2} component='h3' variant="h3" justifySelf="flex-start">
             Note Lists
