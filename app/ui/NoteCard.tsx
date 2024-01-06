@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Card, Box, Typography } from "@mui/material/index"
-import Stack from '@mui/material/stack'
+import { Card, Box, Typography, Stack } from "@mui/material/index"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import CustomChip from "./CustomChip";
