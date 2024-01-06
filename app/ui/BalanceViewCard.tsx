@@ -9,7 +9,6 @@ interface Types {
 }
 
 const BalanceViewCard = ({
-    currencyName,
     walltetName,
     totalAmount
 }: Types) => {
@@ -33,7 +32,9 @@ const BalanceViewCard = ({
                     sx={{
                         marginBottom: '10px'
                     }}
-                    variant="h3"
+                    component="h4"
+                    variant="h4"
+                    fontWeight={700}
                 >
                     {walltetName} BALANCE
                 </Typography>

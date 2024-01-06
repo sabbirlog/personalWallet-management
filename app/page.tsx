@@ -61,16 +61,16 @@ export default function Home() {
       padding: '100px 0'
     }}>
       <Container>
-        <Stack direction="row" spacing={2} mb={4} justifyContent='space-between'>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mb={4} justifyContent='space-between'>
           <Typography component='h2' variant='h2'>
             Personal Wallet Management
           </Typography>
           <Button variant="contained" color="info" onClick={handleModalOpen}>
-            ADD NOTE
+            ADD TRANSACTION
           </Button>
         </Stack>
         <CurrencyConverter currencyName={currencyName} setCurrencyName={setCurrencyName} />
-        <Stack direction='row' gap={2}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
           <BalanceViewCard currencyName={currencyName} walltetName="USD" totalAmount={totalBalanceByCurrency} />
           <BalanceViewCard currencyName={currencyName} walltetName="EUR" totalAmount={totalBalanceByCurrency} />
           <BalanceViewCard currencyName={currencyName} walltetName="CAD" totalAmount={totalBalanceByCurrency} />
