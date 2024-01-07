@@ -61,7 +61,44 @@ const NoteCard = ({
                         <Typography
                             variant="body1"
                         >
-                            <Box component='span'>CURRENCY DENOMINATIONS :</Box> {currencySymbol}1 : {notesCount[1]} - {currencySymbol}5 : {notesCount[5]} - {currencySymbol}10 : {notesCount[10]} - {currencySymbol}20 : {notesCount[20]}
+                            <Box component='span'>CURRENCY NOTES</Box>
+                            <Box mt={1}>
+                                <Stack sx={
+                                    {
+                                        width: '200px',
+                                        border: '1px solid #ccc'
+                                    }
+                                } direction='row'>
+                                    <Typography padding={1} borderRight="1px solid #ccc" width='100px'>
+                                        NAME
+                                    </Typography>
+                                    <Typography padding={1} width='100px'>
+                                        COUNT
+                                    </Typography>
+                                </Stack>
+                                {
+                                    Object.entries(notesCount)?.map(([key, value]) => {
+                                        if (value > 0) {
+                                            return (
+                                                <Stack sx={
+                                                    {
+                                                        width: '200px',
+                                                        border: '1px solid #ccc',
+                                                        marginTop: '-1px'
+                                                    }
+                                                } direction='row'>
+                                                    <Typography padding={1} borderRight="1px solid #ccc" width='100px'>
+                                                        {currencySymbol}{key}
+                                                    </Typography>
+                                                    <Typography padding={1} width='100px'>
+                                                        {value}
+                                                    </Typography>
+                                                </Stack>
+                                            )
+                                        }
+                                    })
+                                }
+                            </Box>
                         </Typography>
                     </Box>
                     <Box sx={{
