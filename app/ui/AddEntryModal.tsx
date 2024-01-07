@@ -16,7 +16,10 @@ const style = {
     border: 'none',
     borderRadius: 2,
     boxShadow: 24,
-    p: 4
+    p: 4,
+    '@media (max-width: 600px)': {
+        width: '100%'
+    }
 };
 
 export default function AddEntryModal({

@@ -34,13 +34,14 @@ export default function AddForm({ currencyName, handleModalClose }: {
     currencyName: string,
     handleModalClose: () => void
 }) {
-    const { control, handleSubmit, formState: {
+    const { control, handleSubmit, resetField, formState: {
         errors
     } } = useForm({
         resolver: yupResolver(validation),
     });
 
-    const [currencyNote, setCurrencyNote] = useState<string>('')
+    const [currencyNote, setCurrencyNote] = useState<string>('');
+    const [notesCount, setNotesCount] = useState<number>(0)
 
     const [denominations, setDenominations] = useState<{
         '1': number,
@@ -164,7 +165,7 @@ export default function AddForm({ currencyName, handleModalClose }: {
                 />
                 <FormHelperText>{errors.description?.message}</FormHelperText>
             </Box>
-            <Stack flexDirection='row' gap={2} mb={2}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} mb={2}>
                 <Box sx={{
                     '.MuiFormHelperText-root': {
                         color: '#d32f2f'
@@ -209,6 +210,7 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     onChange={(e) => {
                         field.onChange(e);
                         updateDenominations(e.target.value);
+                        setNotesCount(parseInt(e.target.value))
                     }}
                 />}
                 />
@@ -225,10 +227,23 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     padding: '17.5px 14px',
                     fontWeight: 500,
                     fontSize: '14px',
-                    alignSelf: 'center'
+                    alignSelf: 'center',
+                    '@media (max-width: 600px)': {
+                        width: '100%'
+                    }
                 }}>
-                    400
+                    {currencyNote && notesCount > 0 ? parseInt(currencyNote) * notesCount : 0}
                 </Box>
+                <Button
+                    sx={{
+                        marginBottom: '4px'
+                    }}
+                    variant="contained"
+                    color="info"
+                    size="small"
+                >
+                    Add
+                </Button>
             </Stack>
             <Stack sx={{ marginTop: "20px" }} direction="row" gap={2}>
                 <Button
