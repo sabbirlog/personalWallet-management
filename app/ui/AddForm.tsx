@@ -19,7 +19,7 @@ import {
 import { getSymbols } from "@utils/getSymbols";
 
 const validation = yup.object().shape({
-    note: yup.string().required('Note is required'),
+    description: yup.string().required('Note is required'),
     currencyNote: yup.string().required('Select currency notes'),
     notesCount: yup.number().optional(),
     total: yup.number().optional(),
@@ -53,6 +53,8 @@ export default function AddForm({ currencyName, handleModalClose }: {
         '10': 0,
         '20': 0
     })
+
+    console.log('denominations', denominations)
 
     const idGenerator = () => {
         return '_' + (Math.random() + 1).toString(36).substring(2);
@@ -107,84 +109,9 @@ export default function AddForm({ currencyName, handleModalClose }: {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{
-                '.MuiFormHelperText-root': {
-                    color: '#d32f2f'
-                }
-            }} mb={2}>
-                <Controller name="note" control={control} defaultValue="" render={({ field }) => <TextField
-                    {...field}
-                    label='Note'
-                    type='text'
-                    multiline
-                    rows={4}
-                    variant="outlined"
-                    color="info"
-                    error={Boolean(errors.note)}
-                />}
-                />
-                <FormHelperText>{errors.note?.message}</FormHelperText>
-            </Box>
-            <Box sx={{
-                '.MuiFormHelperText-root': {
-                    color: '#d32f2f'
-                },
-            }} mb={2}>
-                <Controller name="currencyNote" control={control} defaultValue="" render={({ field }) => (
-                    <Select
-                        {...field}
-                        variant="outlined"
-                        fullWidth
-                        error={Boolean(errors.currencyNote)}
-                        displayEmpty
-                        color="info"
-                        onChange={(e) => {
-                            field.onChange(e)
-                            setCurrencyNote(e.target.value)
-                        }}
-                        renderValue={(selected) => selected || 'Currency Notes'}
-                    >
-                        {
-                            currencyNotes?.map((note, i) =>
-                                <MenuItem key={i} value={note}>{currencySymbol}{note}</MenuItem>
-                            )
-                        }
-                    </Select>
-                )} />
-                <FormHelperText>{errors.currencyNote?.message}</FormHelperText>
-            </Box>
-            <Stack flexDirection='row' gap={2} mb={2}>
-                <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
-                    {...field}
-                    label='Notes Count'
-                    type='number'
-                    variant="outlined"
-                    color="info"
-                    onChange={(e) => {
-                        field.onChange(e);
-                        updateDenominations(e.target.value);
-                    }}
-                />}
-                />
-                <Controller name="total" control={control} defaultValue={0}
-                    render={({ field }) =>
-                        <TextField
-                            {...field}
-                            label="Total Amount"
-                            type='number'
-                            value={calculateTotal()}
-                            variant="outlined"
-                            color="info"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    }
-                />
-            </Stack>
-            <Box>
+            <Box mb={2}>
                 <Typography component='h5' variant="h5" sx={{ marginBottom: "6px" }}>
-                    Select Note Type
+                    Select Transaction Type
                 </Typography>
                 <Controller name="noteType" defaultValue='Income' control={control} render={({ field }) => <ToggleButtonGroup
                     {...field}
@@ -219,6 +146,90 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     </ToggleButton>
                 </ToggleButtonGroup>} />
             </Box>
+            <Box sx={{
+                '.MuiFormHelperText-root': {
+                    color: '#d32f2f'
+                }
+            }} mb={2}>
+                <Controller name="description" control={control} defaultValue="" render={({ field }) => <TextField
+                    {...field}
+                    label='Description'
+                    type='text'
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    color="info"
+                    error={Boolean(errors.description)}
+                />}
+                />
+                <FormHelperText>{errors.description?.message}</FormHelperText>
+            </Box>
+            <Stack flexDirection='row' gap={2} mb={2}>
+                <Box sx={{
+                    '.MuiFormHelperText-root': {
+                        color: '#d32f2f'
+                    },
+                }}>
+                    <Controller name="currencyNote" control={control} defaultValue="" render={({ field }) => (
+                        <Select
+                            {...field}
+                            variant="outlined"
+                            fullWidth
+                            error={Boolean(errors.currencyNote)}
+                            displayEmpty
+                            color="info"
+                            onChange={(e) => {
+                                field.onChange(e)
+                                setCurrencyNote(e.target.value)
+                            }}
+                            renderValue={(selected) => selected || 'Currency Notes'}
+                        >
+                            {
+                                currencyNotes?.map((note, i) =>
+                                    <MenuItem key={i} value={note}>{currencySymbol}{note}</MenuItem>
+                                )
+                            }
+                        </Select>
+                    )} />
+                    <FormHelperText>{errors.currencyNote?.message}</FormHelperText>
+                </Box>
+                <Box component='span' sx={{
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    alignSelf: 'center'
+                }} alignSelf="center">
+                    *
+                </Box>
+                <Controller name="notesCount" control={control} defaultValue={0} render={({ field }) => <TextField
+                    {...field}
+                    label='Notes Count'
+                    type='number'
+                    variant="outlined"
+                    color="info"
+                    onChange={(e) => {
+                        field.onChange(e);
+                        updateDenominations(e.target.value);
+                    }}
+                />}
+                />
+                <Box component='span' sx={{
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    alignSelf: 'center'
+                }} alignSelf="center">
+                    =
+                </Box>
+                <Box component='span' sx={{
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    padding: '17.5px 14px',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    alignSelf: 'center'
+                }}>
+                    400
+                </Box>
+            </Stack>
             <Stack sx={{ marginTop: "20px" }} direction="row" gap={2}>
                 <Button
                     sx={{
@@ -238,7 +249,7 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     variant="contained"
                     color="info"
                 >
-                    ADD NOTE
+                    Save
                 </Button>
             </Stack>
         </form >
