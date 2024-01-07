@@ -80,9 +80,8 @@ export default function Home() {
             Note Lists
           </Typography>
           {
-            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.note} type={note.noteType}
+            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.description} type={note.noteType}
               currencyName={note.currencyName}
-              amount={note.total}
               notesCount={note.notesCount}
               handleDelete={() =>
                 setFilteredId(note.id)

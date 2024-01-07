@@ -10,7 +10,6 @@ interface Types {
     title: string;
     type: string;
     currencyName: string;
-    amount: string;
     notesCount: {
         '1': number,
         '5': number,
@@ -24,7 +23,6 @@ const NoteCard = ({
     title,
     currencyName,
     type,
-    amount,
     notesCount,
     handleDelete
 }: Types) => {
@@ -32,6 +30,16 @@ const NoteCard = ({
 
     const handleOpen = () => {
         setOpenAlert(true)
+    }
+
+    const calculateTotal = () => {
+        return Object.entries(notesCount)?.reduce((total, [key, value]) => {
+            if (value > 0) {
+                const totalAmount = total + parseInt(key) * value
+                return totalAmount;
+            }
+            return total
+        }, 0)
     }
 
     const currencySymbol = getSymbols(currencyName)
@@ -54,7 +62,7 @@ const NoteCard = ({
                             variant="body1"
                             mb={2}
                         >
-                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{amount} <CustomChip label={type} type={type} sx={{
+                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{calculateTotal()} <CustomChip label={type} type={type} sx={{
                                 marginLeft: '6px'
                             }} />
                         </Typography>

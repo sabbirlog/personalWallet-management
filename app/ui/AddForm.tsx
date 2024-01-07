@@ -61,27 +61,15 @@ export default function AddForm({ currencyName, handleModalClose }: {
         return '_' + (Math.random() + 1).toString(36).substring(2);
     }
 
-    const updateDenominations = (value: string) => {
-        const convertToInteger = parseInt(value)
-
+    const updateDenominations = () => {
         Object.keys(denominations)?.map((denomination) => {
             if (denomination === currencyNote?.toString()) {
                 setDenominations(prev => ({
                     ...prev,
-                    [denomination]: convertToInteger
+                    [denomination]: notesCount
                 }))
             }
         })
-    }
-
-    const calculateTotal = () => {
-        return Object.entries(denominations)?.reduce((total, [key, value]) => {
-            if (value > 0) {
-                const totalAmount = total + parseInt(key) * value
-                return totalAmount;
-            }
-            return total
-        }, 0)
     }
 
     const onSubmit = (data: any) => {
@@ -93,7 +81,6 @@ export default function AddForm({ currencyName, handleModalClose }: {
             id: idGenerator(),
             currencyName,
             notesCount: denominations,
-            total: calculateTotal(),
         }
 
         // get notes from local storage
@@ -209,7 +196,6 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     color="info"
                     onChange={(e) => {
                         field.onChange(e);
-                        updateDenominations(e.target.value);
                         setNotesCount(parseInt(e.target.value))
                     }}
                 />}
@@ -241,6 +227,11 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     variant="contained"
                     color="info"
                     size="small"
+                    onClick={() => {
+                        updateDenominations();
+                        resetField('notesCount');
+                        setNotesCount(0);
+                    }}
                 >
                     Add
                 </Button>
