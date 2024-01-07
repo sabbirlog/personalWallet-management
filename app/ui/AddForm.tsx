@@ -55,8 +55,6 @@ export default function AddForm({ currencyName, handleModalClose }: {
         '20': 0
     })
 
-    console.log('denominations', denominations)
-
     const idGenerator = () => {
         return '_' + (Math.random() + 1).toString(36).substring(2);
     }
@@ -72,6 +70,16 @@ export default function AddForm({ currencyName, handleModalClose }: {
         })
     }
 
+    const calculateTotal = () => {
+        return Object.entries(denominations)?.reduce((total, [key, value]) => {
+            if (value > 0) {
+                const totalAmount = total + parseInt(key) * value
+                return totalAmount;
+            }
+            return total
+        }, 0)
+    }
+
     const onSubmit = (data: any) => {
         if (data) {
             delete data?.currencyNote
@@ -81,6 +89,7 @@ export default function AddForm({ currencyName, handleModalClose }: {
             id: idGenerator(),
             currencyName,
             notesCount: denominations,
+            total: calculateTotal()
         }
 
         // get notes from local storage

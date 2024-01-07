@@ -4,17 +4,16 @@ import { getSymbols } from '@utils/getSymbols';
 
 interface Types {
     currencyName: string;
-    walltetName: string;
     totalAmount: (val: string) => void
 }
 
 const BalanceViewCard = ({
-    walltetName,
+    currencyName,
     totalAmount
 }: Types) => {
 
-    const symbols = getSymbols(walltetName);
-    const total: any = totalAmount(walltetName)
+    const symbols = getSymbols(currencyName);
+    const total: any = totalAmount(currencyName);
 
     return (
         <Card sx={{
@@ -36,7 +35,7 @@ const BalanceViewCard = ({
                     variant="h4"
                     fontWeight={700}
                 >
-                    {walltetName} BALANCE
+                    {currencyName} BALANCE
                 </Typography>
                 <Box
                     sx={{

@@ -3,18 +3,16 @@
 import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { alpha, Box, Card, Container, Typography } from '@mui/material';
+import { alpha, Card, Container, Typography } from '@mui/material';
 
 import { BalanceViewCard, NoteCard } from "./ui/index";
 import CurrencyConverter from './ui/CurrencyConverter';
-import { fetchCurrency } from './api/fetchCurrency';
 import AddEntryModal from './ui/AddEntryModal';
 
 export default function Home() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [notes, setNotes] = useState<{}[]>([]);
   const [filteredId, setFilteredId] = useState<string>('');
-  const [currencies, setCurrencies] = useState();
   const [currencyName, setCurrencyName] = useState<string>('USD');
 
   const handleModalOpen = () => {
@@ -44,17 +42,7 @@ export default function Home() {
       setNotes(filteredNotes);
       localStorage.setItem('notesArray', JSON.stringify(filteredNotes))
     }
-
-    const fetchData = async () => {
-      const data = await fetchCurrency();
-      if (data) {
-        setCurrencies(data)
-      }
-    }
-    fetchData()
   }, [filteredId, openModal])
-
-  // const convertion = currencies && currencies.data[currencyName];
 
   return (
     <main style={{
@@ -71,17 +59,16 @@ export default function Home() {
         </Stack>
         <CurrencyConverter currencyName={currencyName} setCurrencyName={setCurrencyName} />
         <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
-          <BalanceViewCard currencyName={currencyName} walltetName="USD" totalAmount={totalBalanceByCurrency} />
-          <BalanceViewCard currencyName={currencyName} walltetName="EUR" totalAmount={totalBalanceByCurrency} />
-          <BalanceViewCard currencyName={currencyName} walltetName="CAD" totalAmount={totalBalanceByCurrency} />
+          <BalanceViewCard currencyName={currencyName} totalAmount={totalBalanceByCurrency} />
         </Stack>
         <Stack mt={2} spacing={2}>
           <Typography mb={2} component='h3' variant="h3" justifySelf="flex-start">
             Note Lists
           </Typography>
           {
-            notes.length !== 0 ? notes?.map((note: any) => <NoteCard key={note.id} title={note.description} type={note.noteType}
+            notes?.length !== 0 && totalBalanceByCurrency(currencyName) !== 0 ? notes?.filter((note: any) => note.currencyName === currencyName)?.map((note: any) => <NoteCard key={note.id} title={note.description} type={note.noteType}
               currencyName={note.currencyName}
+              total={note.total}
               notesCount={note.notesCount}
               handleDelete={() =>
                 setFilteredId(note.id)

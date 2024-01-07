@@ -16,6 +16,7 @@ interface Types {
         '10': number,
         '20': number
     };
+    total: string;
     handleDelete: (event?: React.MouseEvent<HTMLElement>) => void
 }
 
@@ -24,22 +25,13 @@ const NoteCard = ({
     currencyName,
     type,
     notesCount,
+    total,
     handleDelete
 }: Types) => {
     const [openAlert, setOpenAlert] = useState<boolean>(false);
 
     const handleOpen = () => {
         setOpenAlert(true)
-    }
-
-    const calculateTotal = () => {
-        return Object.entries(notesCount)?.reduce((total, [key, value]) => {
-            if (value > 0) {
-                const totalAmount = total + parseInt(key) * value
-                return totalAmount;
-            }
-            return total
-        }, 0)
     }
 
     const currencySymbol = getSymbols(currencyName)
@@ -62,7 +54,7 @@ const NoteCard = ({
                             variant="body1"
                             mb={2}
                         >
-                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{calculateTotal()} <CustomChip label={type} type={type} sx={{
+                            <Box component='span'>AMOUNT :</Box> {currencySymbol}{total} <CustomChip label={type} type={type} sx={{
                                 marginLeft: '6px'
                             }} />
                         </Typography>
