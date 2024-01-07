@@ -245,6 +245,64 @@ export default function AddForm({ currencyName, handleModalClose }: {
                     Add
                 </Button>
             </Stack>
+            {
+                calculateTotal() > 0 && (
+                    <Stack>
+                        <Typography component='h5' variant="h5">CURRENCY NOTES</Typography>
+                        <Box mt={1}>
+                            <Stack sx={
+                                {
+                                    width: '200px',
+                                    border: '1px solid #ccc'
+                                }
+                            } direction='row' justifyContent='center'>
+                                <Typography padding={1} component='h5' variant="h5" borderRight="1px solid #ccc" width='100px'>
+                                    NAME
+                                </Typography>
+                                <Typography padding={1} component='h5' variant="h5" width='100px'>
+                                    COUNT
+                                </Typography>
+                            </Stack>
+                            {
+                                Object.entries(denominations)?.map(([key, value]) => {
+                                    if (value > 0) {
+                                        return (
+                                            <Stack sx={
+                                                {
+                                                    width: '200px',
+                                                    border: '1px solid #ccc',
+                                                    marginTop: '-1px'
+                                                }
+                                            } direction='row'>
+                                                <Typography padding={1} component='h5' variant="h5" borderRight="1px solid #ccc" width='100px'>
+                                                    {currencySymbol}{key}
+                                                </Typography>
+                                                <Typography padding={1} component='h5' variant="h5" width='100px'>
+                                                    {value}
+                                                </Typography>
+                                            </Stack>
+                                        )
+                                    }
+                                })
+                            }
+                            <Stack sx={
+                                {
+                                    width: '200px',
+                                    border: '1px solid #ccc',
+                                    marginTop: '-1px'
+                                }
+                            } direction='row' justifyContent='center'>
+                                <Typography padding={1} component='h5' variant="h5" borderRight="1px solid #ccc" width='100px'>
+                                    TOTAL
+                                </Typography>
+                                <Typography padding={1} component='h5' variant="h5" width='100px'>
+                                    {calculateTotal()}
+                                </Typography>
+                            </Stack>
+                        </Box>
+                    </Stack>
+                )
+            }
             <Stack sx={{ marginTop: "20px" }} direction="row" gap={2}>
                 <Button
                     sx={{

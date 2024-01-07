@@ -58,9 +58,7 @@ const NoteCard = ({
                                 marginLeft: '6px'
                             }} />
                         </Typography>
-                        <Typography
-                            variant="body1"
-                        >
+                        <Stack fontWeight={600}>
                             <Box component='span'>CURRENCY NOTES</Box>
                             <Box mt={1}>
                                 <Stack sx={
@@ -99,7 +97,7 @@ const NoteCard = ({
                                     })
                                 }
                             </Box>
-                        </Typography>
+                        </Stack>
                     </Box>
                     <Box sx={{
                         cursor: 'pointer'

@@ -18,7 +18,9 @@ const style = {
     boxShadow: 24,
     p: 4,
     '@media (max-width: 600px)': {
-        width: '100%'
+        width: '100%',
+        height: '100vh',
+        overflowY: 'scroll'
     }
 };
 
